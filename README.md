@@ -5,7 +5,7 @@ Every project should kickstart with some basic utils :)
 `npm install kickstart-utils`
 
 ```
-import { run, match, cn } from 'kickstart-utils'
+import { run, match, cn, toArray, toDictionary, isEmpty } from 'kickstart-utils'
 
 let myFunc = null
 run(myFunc) // null
@@ -23,4 +23,15 @@ const value = match(switchExpression , {
 let condition = false
 let classFromProp = undefined
 const chainedCSSClasses = cn("a", classFromProp, "b", condition && "c", "d") // "a b d"
+
+let myVar = 3
+toArray(myVar) // [3]
+toArray([myVar]) // [3]
+
+let array = [{ id: "1_2", foo: 2 }, { id: "3_4", bar: 3 }]
+toDictionary(array, "id") // { 1_2: {id: "1_2", foo: 2 }, 3_4: { id: "3_4", bar: 3 } }
+
+isEmpty([]) // true
+isEmpty({}) // true
+isEmpty("  ") // true
 ```
