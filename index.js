@@ -36,6 +36,7 @@ const isObjectEmpty = obj => {
     return true
 }
 
+// check isEmpty([" "]) and isEmpty([null])
 export const isEmpty = v => {
     if (!v) return true
     if (isString(v)) return !/([^\s])/.test(v)
