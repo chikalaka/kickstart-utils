@@ -23,4 +23,11 @@ const value = match(switchExpression , {
 let condition = false
 let classFromProp = undefined
 const chainedCSSClasses = cn("a", classFromProp, "b", condition && "c", "d") // "a b d"
+
+let myVar = 3
+toArray(myVar) // [3]
+toArray([myVar]) // [3]
+
+let array = [{ id: "1_2", foo: 2 }, { id: "3_4", bar: 3 }]
+toDictionary(array, "id") // { 1_2: {id: "1_2", foo: 2 }, 3_4: { id: "3_4", bar: 3 } }
 ```
