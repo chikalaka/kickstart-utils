@@ -14,9 +14,21 @@ export const isFunction = isTypeof("function")
 export const isUndefined = isTypeof("undefined")
 export const isBoolean = isTypeof("boolean")
 export const { isArray } = Array
+export const isInteger = v => Number.isInteger(Number(v))
 export const isError = e =>
-    (e instanceof Error) & (typeof e.message !== "undefined")
+    e instanceof Error && typeof e.message !== "undefined"
+export const isNumber = (v, includeString = false) => {
+    if (includeString && isString(v)) {
+        const reg = /^-?\d*\.?\d*$/
+        return reg.test(v)
+    } else {
+        return isTypeof("number")(v)
+    }
+}
+export const isInteger = (v, includeString = false) =>
+    Number.isInteger(includeString ? Number(v) : v)
 
+// after there are some tests, check without the filer(identity)
 export const cn = (...classes) =>
     classes.filter(identity).filter(isString).join(" ")
 
@@ -41,4 +53,9 @@ export const isEmpty = v => {
     if (!v) return true
     if (isString(v)) return !/([^\s])/.test(v)
     return isObjectEmpty(v)
+}
+
+export const random = (min = 0, max = 1, float = false) => {
+    const rand = Math.random() * (max - min + 1) + min
+    return float ? rand : Math.floor(rand)
 }
