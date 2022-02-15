@@ -211,7 +211,9 @@ test("toDictionary", () => {
 })
 
 test("stopEventPropagation", () => {
+  // @ts-ignore
   expect(stopEventPropagation(undefined)).toBe(undefined)
+  // @ts-ignore
   expect(stopEventPropagation(null)).toBe(undefined)
 })
 
