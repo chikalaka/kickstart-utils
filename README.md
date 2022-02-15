@@ -20,7 +20,7 @@ npm install kickstart-utils
     - [stopEventPropagation](#stopEventPropagation)
     - [toArray](#toArray)
     - [toDictionary](#toDictionary)
-- [Type check](#type-check) []
+- [Type check](#type-check)
     - [isArray](#isArray)
     - [isBoolean](#isBoolean)
     - [isError](#isError)
@@ -30,7 +30,7 @@ npm install kickstart-utils
     - [isNumber](#isNumber)
     - [isObject](#isObject)
     - [isString](#isString)
-- [Types](#types) {}
+- [Types](#types)
     - [Nullish](#Nullish)
     - [Primitive](#Primitive)
 
