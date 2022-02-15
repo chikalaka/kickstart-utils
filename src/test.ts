@@ -96,11 +96,12 @@ test("isBoolean", () => {
   expect(isBoolean(null)).toBe(false)
   expect(isBoolean("")).toBe(false)
   expect(isBoolean(0)).toBe(false)
+  expect(isBoolean("true")).toBe(false)
+  expect(isBoolean(0)).toBe(false)
+  expect(isBoolean(1)).toBe(false)
 
   expect(isBoolean(true)).toBe(true)
   expect(isBoolean(false)).toBe(true)
-  expect(isBoolean(Boolean("false"))).toBe(true)
-  expect(isBoolean(Boolean(false))).toBe(true)
 })
 
 test("isArray", () => {
@@ -109,13 +110,14 @@ test("isArray", () => {
 
   expect(isArray([1, 2])).toBe(true)
   expect(isArray(Array(1, 2))).toBe(true)
+  expect(isArray([])).toBe(true)
 })
 
 test("isError", () => {
   expect(isError(undefined)).toBe(false)
   expect(isError(null)).toBe(false)
   expect(isError("Error")).toBe(false)
-  expect(isError(new Object({ message: "msg" }))).toBe(false)
+  expect(isError(new Object({ message: "Error" }))).toBe(false)
 
   expect(isError(Error())).toBe(true)
   expect(isError(new Error("hi"))).toBe(true)

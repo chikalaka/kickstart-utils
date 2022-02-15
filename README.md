@@ -76,7 +76,9 @@ For any time we need a noop function
 ```jsx
 import { noop } from 'kickstart-utils';
 
-<div onClick={noop} /> 
+// noop = () => {}
+
+<div onClick={noop}/> 
 ```
 
 ### random
@@ -93,7 +95,7 @@ For most cases, if we are sure the value is either a function or undefined, we c
 ```js
 import { run } from 'kickstart-utils';
 
-const myFunc = (text) => console.log('hi', text)
+const myFunc = (text) => 'hi' + text
 run(myFunc, 'foo') // 'hi foo'
 run('Not a function') // 'Not a function'
 ```
@@ -129,21 +131,55 @@ toDictionary(arr, 'id') // { 1: { id: 1, name: 'foo' }, 2: { id: 2, name: 'bar' 
 Most of them are self-explanatory.
 ### isArray
 
+```js
+import { isArray } from 'kickstart-utils';
+
+isArray([]) // true
+```
 ### isBoolean
 
+```js
+import { isBoolean } from 'kickstart-utils';
+
+isBoolean("true") // false
+isBoolean(true) // true
+```
 ### isError
 
+```js
+import { isError } from 'kickstart-utils';
+
+isError({message: "Error"}) // false
+isError(Error()) // true
+```
 ### isFunction
 
+```js
+import { isFunction } from 'kickstart-utils';
+
+isFunction(() => {}) // true
+```
 ### isInteger
 With an option to check on a string.
 
+```js
+import { isInteger } from 'kickstart-utils';
+
+isInteger(3.2) // false
+isInteger("12", true) // true
+```
 ### isNullish
 Nullish is a type that is either null or undefined.
 
 ### isNumber
 With an option to check on a string.
 
+```js
+import { isNumber } from 'kickstart-utils';
+
+isNumber(123.456) // true
+isNumber(".123", true) // true
+```
 ### isObject
 Check if is an object (not Array, or null)
 ```js
@@ -154,11 +190,30 @@ isObject([{ foo: 'bar' }]) // false
 
 ### isString
 
+```js
+import { isString } from 'kickstart-utils';
+
+isString("") // true
+```
+
 ### Types
+
 Some common ts types
 
 ### Nullish
-null or undefined
+
+```js
+import { Nullish } from 'kickstart-utils';
+
+// Nullish = null | undefined
+```
 
 ### Primitive
-js primitive types
+
+js primitive types (no `symbol`)
+
+```js
+import { Primitive } from 'kickstart-utils';
+
+// Primitive = string | number | bigint | boolean | undefined | null
+```
