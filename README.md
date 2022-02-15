@@ -36,16 +36,20 @@ npm install kickstart-utils
 
 ### Utils
 
-### cn (class-names)
-Returns a string removing anything unrelated to css class names.
-```typescript jsx
-import { cn } from 'kickstart-utils';
+### cn
 
-<div class={cn('foo', a && 'bar', b, 'baz')} /> // class="foo baz" 
+Stands for class-names - returns a string removing anything unrelated to css class names.
+
+```typescript jsx
+import {cn} from 'kickstart-utils';
+
+<div class={cn('foo', a && 'bar', b, 'baz')}/> // class="foo baz" 
 ```
 
 ### isEmpty
+
 Check if falsy (except 0) or empty object
+
 ```js
 import { isEmpty } from 'kickstart-utils';
 
