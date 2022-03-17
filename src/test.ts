@@ -15,7 +15,8 @@ import {
   toDictionary,
   stopEventPropagation,
   isEmpty,
-  isNumber
+  isNumber,
+  range
 } from "./index"
 
 describe("run", () => {
@@ -245,13 +246,22 @@ describe("isEmpty", () => {
     expect(isEmpty(Number(23))).toBe(false)
     expect(isEmpty(Infinity)).toBe(false)
     expect(isEmpty(0)).toBe(false)
-    expect(isEmpty(NaN)).toBe(true)
+    expect(isEmpty(NaN)).toBe(false)
   })
   it("function", () => {
     expect(isEmpty(() => {})).toBe(false)
   })
   it("boolean", () => {
     expect(isEmpty(Boolean(true))).toBe(false)
-    expect(isEmpty(false)).toBe(true)
+    expect(isEmpty(false)).toBe(false)
   })
+})
+
+test("range", () => {
+  expect(range(undefined)).toEqual([])
+  // @ts-ignore
+  expect(range(null)).toEqual([])
+  expect(range()).toEqual([])
+  expect(range(1)).toEqual([0])
+  expect(range(3)).toEqual([0, 1, 2])
 })

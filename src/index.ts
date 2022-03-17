@@ -65,8 +65,7 @@ const isObjectEmpty = (obj: Object) => {
 }
 
 export const isEmpty = (v: any) => {
-  if (v === 0) return false
-  if (!v) return true
+  if (isNullish(v)) return true
   if (isString(v)) return !/([^\s])/.test(v)
   if (isArray(v)) return v.length === 0
   if (isObject(v)) return isObjectEmpty(v)
@@ -74,6 +73,9 @@ export const isEmpty = (v: any) => {
 }
 
 export const random = (min = 0, max = 1, float = false) => {
-  const rand = Math.random() * (max - min + 1) + min
+  const add = float ? 0 : 1
+  const rand = Math.random() * (max - min + add) + min
   return float ? rand : Math.floor(rand)
 }
+
+export const range = (length?: number) => Array.from(Array(length || 0).keys())

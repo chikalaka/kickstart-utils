@@ -2,8 +2,18 @@
 
 Every project should kickstart with some basic utils :)
 
-With no dependencies! 
+From small projects to big, **all** of these utils are useful. with no dependencies!
+
+Includes utils such as `isEmpty`, `isObject`, `random`, `match`, `toDictionary` and more.
+
+PRs are more than welcome!
+
+1. Only utils and types that every project would use
+2. Which means, KISS (Keep It Simple, Stupid)
+3. No dependencies
+
 ## Installation
+
 ```shell
 npm install kickstart-utils
 ```
@@ -16,6 +26,7 @@ npm install kickstart-utils
     - [match](#match)
     - [noop](#noop)
     - [random](#random)
+    - [range](#range)
     - [run](#run)
     - [stopEventPropagation](#stopEventPropagation)
     - [toArray](#toArray)
@@ -82,16 +93,40 @@ import { noop } from 'kickstart-utils';
 ```
 
 ### random
+
 Random, or random between two numbers
+
 ```js
 import { random } from 'kickstart-utils'
 
 random(4, 8) // 4, 5, 6, 7, 8
 ```
 
+### range
+
+Creates a simple range from 0 to n
+
+For more "complex" range, you can either use this range and map on it or create your own range
+
+```js
+import { range } from 'kickstart-utils'
+
+range(0) // []
+range(5) // [0, 1, 2, 3, 4]
+
+const fromToRange = (from, to) => range(to - from).map(i => i + from)
+// There are some edge cases though, and the library should be as lean as possible
+// so we keep it simple
+const fromToRangeWithStep = (from, to, step) => range(to - from).reduce(
+  (acc, i) => i < (to - from) / step ? [...acc, i * step + from] : acc, []
+)
+```
+
 ### run
-For the times we're not sure if the value is a function.
-For most cases, if we are sure the value is either a function or undefined, we can use `myFunc?.(args)`.
+
+For the times we're not sure if the value is a function. For most cases, if we are sure the value is either a function
+or undefined, we can use `myFunc?.(args)`.
+
 ```js
 import { run } from 'kickstart-utils';
 
