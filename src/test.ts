@@ -16,7 +16,8 @@ import {
   stopEventPropagation,
   isEmpty,
   isNumber,
-  range
+  range,
+  random
 } from "./index"
 
 describe("run", () => {
@@ -262,4 +263,40 @@ test("range", () => {
   expect(range()).toEqual([])
   expect(range(1)).toEqual([0])
   expect(range(3)).toEqual([0, 1, 2])
+})
+
+describe("random", () => {
+  it("empty", () => {
+    const set = new Set()
+    range(10000).map(_ => {
+      const str = random() + ""
+      set.add(str.slice(0, 3))
+    })
+    expect(set.size).toBe(10)
+    range(10).forEach(v => {
+      expect(set.has(`0.${v}`)).toBe(true)
+    })
+  })
+  it("min & max", () => {
+    const set = new Set()
+    range(1000).map(_ => {
+      const v = random(-1, 1)
+      set.add(v)
+    })
+    expect(set.size).toBe(3)
+    expect(set.has(-1)).toBe(true)
+    expect(set.has(0)).toBe(true)
+    expect(set.has(1)).toBe(true)
+  })
+  it("min & max & float", () => {
+    const set = new Set()
+    range(10000).map(_ => {
+      const str = random(-2, -1, true) + ""
+      set.add(str.slice(0, 4))
+    })
+    expect(set.size).toBe(10)
+    range(10).forEach(v => {
+      expect(set.has(`-1.${v}`)).toBe(true)
+    })
+  })
 })
