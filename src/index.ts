@@ -6,10 +6,10 @@ export const run = <T = any>(
   ...args: any[]
 ): T => (isFunction(func) ? func(...args) : func)
 
-export const match = (
-  v: string | number,
-  switchObject: { [index: string | number]: any }
-) => {
+export const match = <T extends string | number | symbol, P extends any>(
+  v: T,
+  switchObject: Partial<Record<T | "default", P>>
+): P | undefined => {
   if (switchObject[v]) return switchObject[v]
   return switchObject["default"]
 }
@@ -49,12 +49,14 @@ export const cn = (...classes: ClassName[]) =>
 
 export const noop = () => {}
 
-export const toArray = <T>(v: T): Array<T> => (isArray(v) ? v : [v])
+export const toArray = <T>(v: T): T extends any[] ? T : T[] =>
+  // @ts-ignore
+  isArray(v) ? v : [v]
 
-export const toDictionary = (
-  arr: { [index: string | number]: any }[],
+export const toDictionary = <T extends Record<any, any>>(
+  arr: T[],
   key: string | number
-) =>
+): Record<string, T> =>
   isArray(arr) ? Object.fromEntries(arr.map((v, i) => [v[key] || i, v])) : {}
 
 export const stopEventPropagation = (event: Event) => event?.stopPropagation()

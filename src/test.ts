@@ -49,9 +49,6 @@ describe("match", () => {
     expect(match(2, switchObject)).toBe(5)
     expect(match(2, {})).toBe(undefined)
   })
-  it("array", () => {
-    expect(match(2, [1, 2, 3])).toBe(3)
-  })
 })
 
 test("isObject", () => {
@@ -197,7 +194,8 @@ test("toArray", () => {
 })
 
 test("toDictionary", () => {
-  const arr = [
+  type Rec = { id: number | string; name: string }
+  const arr: Rec[] = [
     { id: 1, name: "aaa" },
     { id: "hi", name: "bbb" },
     { id: 3, name: "ccc" }
