@@ -38,6 +38,30 @@ describe("run", () => {
 
 describe("match", () => {
   it("simple", () => {
+    // type checks
+    type Abc = "a" | "b" | "c"
+    const getAbc = (): Abc => {
+      const rand = Math.random()
+      if (rand < 0.3) return "a"
+      if (rand < 0.7) return "b"
+      return "c"
+    }
+    const t = getAbc()
+    const a = match<Abc>(t, {
+      default: "d",
+      c: "e",
+      b: 3
+    }) // ideally should be string | number | undefined
+
+    // const aa = match(t, { default: "d", c: "e", b: 3 }) // ideally should be string | number | undefined
+
+    const b: number | string | undefined = match<Abc, number | string>(t, {
+      default: "d",
+      c: 3
+    })
+    const c: string | undefined = match(undefined, { default: "d" })
+    // const c2: string = match(undefined, { default: "d" }) // ideally should be string
+
     const switchObject = {
       foo: 2,
       bar: 3,
@@ -266,17 +290,6 @@ test("range", () => {
 })
 
 describe("random", () => {
-  it("empty", () => {
-    const set = new Set()
-    range(10000).map(_ => {
-      const str = random() + ""
-      set.add(str.slice(0, 3))
-    })
-    expect(set.size).toBe(10)
-    range(10).forEach(v => {
-      expect(set.has(`0.${v}`)).toBe(true)
-    })
-  })
   it("min & max", () => {
     const set = new Set()
     range(1000).map(_ => {

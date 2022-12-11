@@ -1,5 +1,12 @@
 export type Nullish = null | undefined
-export type Primitive = string | number | bigint | boolean | undefined | null
+export type Primitive =
+  | string
+  | number
+  | bigint
+  | boolean
+  | undefined
+  | null
+  | symbol
 
 /**
  * <i>**run**</i> will trigger if a function, either way it returns the value
@@ -27,11 +34,18 @@ export const run = <T = any>(
  * @param switchObject compare the value to the object keys
  * @return the matched value, or default, if provided
  */
-export const match = <T extends string | number | symbol, P extends any>(
+export const match = <
+  T extends string | number | symbol | undefined | null,
+  P = any
+>(
   value: T,
-  switchObject: Partial<Record<T | "default", P>>
-): P | undefined => {
-  if (switchObject[value]) return switchObject[value]
+  switchObject: { default?: P } & {
+    [key in Exclude<T, undefined | null>]?: P
+  }
+) => {
+  if (value && switchObject.hasOwnProperty(value)) {
+    return switchObject[value as Exclude<T, undefined | null>]
+  }
   return switchObject["default"]
 }
 
