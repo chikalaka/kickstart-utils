@@ -70,7 +70,6 @@ describe("match", () => {
     expect(match("foo", switchObject)).toBe(2)
     expect(match("default", switchObject)).toBe(5)
     expect(match("not exist", switchObject)).toBe(5)
-    expect(match("not exist", switchObject)).toBe(5)
     expect(match(2, switchObject)).toBe(5)
     expect(match(2, {})).toBe(undefined)
   })

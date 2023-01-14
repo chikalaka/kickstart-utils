@@ -51,7 +51,7 @@ export const match = <
 
 const isTypeof =
   <T>(type: string) =>
-  (v: any): v is T =>
+  (v: unknown): v is T =>
     typeof v === type
 
 /**
@@ -64,7 +64,7 @@ const isTypeof =
  * <code>isObject({ a: 1 }) // true</code>
  * @param v
  */
-export const isObject = (v: any): v is object =>
+export const isObject = (v: unknown): v is object =>
   !!v && typeof v === "object" && v.constructor === Object
 
 export const isString = isTypeof<string>("string")
@@ -74,7 +74,8 @@ export const isFunction = isTypeof<Function>("function")
  * Check if a value is <i>undefined</i> or <i>null</i>
  * @param v
  */
-export const isNullish = (v: any): v is Nullish => v === undefined || v === null
+export const isNullish = (v: unknown): v is Nullish =>
+  v === undefined || v === null
 
 export const isBoolean = isTypeof<boolean>("boolean")
 
@@ -82,9 +83,14 @@ export const isBoolean = isTypeof<boolean>("boolean")
  * Shortcut for {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray Array.isArray}
  */
 export const isArray = Array.isArray
-export const isError = (e: any): e is Error =>
+
+type ErrorObject = { stack: any; message: any }
+export const isError = (e: unknown): e is Error =>
   (e instanceof Error && isString(e.message)) ||
-  (e && e.stack && isString(e.stack) && isString(e.message)) ||
+  (e &&
+    (e as ErrorObject).stack &&
+    isString((e as ErrorObject).stack) &&
+    isString((e as ErrorObject).message)) ||
   Object.prototype.toString.call(e) === "[object Error]"
 
 /**
@@ -96,15 +102,12 @@ export const isError = (e: any): e is Error =>
  * @param v
  * @param includeString
  */
-export const isNumber = (v: any, includeString = false) => {
-  if (includeString && isString(v)) {
-    const reg = /^-?\d*\.?\d*$/
-    return reg.test(v)
-  } else {
-    if (Number.isNaN(v)) return false
-    return isTypeof<number>("number")(v)
-  }
-}
+export const isNumber = <T>(
+  v: unknown,
+  includeString = false
+): v is T extends string ? string : number =>
+  !isNaN(Number(v)) && (includeString || typeof v === "number")
+
 /**
  * With an option to check on a string
  *
@@ -114,7 +117,10 @@ export const isNumber = (v: any, includeString = false) => {
  * @param v
  * @param includeString
  */
-export const isInteger = (v: any, includeString = false) =>
+export const isInteger = <T>(
+  v: unknown,
+  includeString = false
+): v is T extends string ? string : number =>
   Number.isInteger(includeString ? Number(v) : v)
 
 type ClassName = string | boolean | Nullish
@@ -195,7 +201,7 @@ const isObjectEmpty = (obj: Object) => {
  * <code>isEmpty({}) // true</code>
  * @param v
  */
-export const isEmpty = (v: any) => {
+export const isEmpty = (v: unknown) => {
   if (isNullish(v)) return true
   if (isString(v)) return !/([^\s])/.test(v)
   if (isArray(v)) return v.length === 0
