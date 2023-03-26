@@ -23,30 +23,53 @@ export const run = <T = any>(
   ...args: any[]
 ): T => (isFunction(func) ? func(...args) : func)
 
+type ValueUnion<T> = T[keyof T]
+
 /**
- * <i>**match**</i> a value instead of switch case
+ * A utility function that matches a given value against a match object and returns
+ * the corresponding value associated with the matched key or the default value, if provided.
+ * If no match or default value is found, it returns `undefined`.
  *
- * <code>match("foo", { foo: 2, bar: 3, default: 5 }); // 2</code>
+ * @template TValue - Allowed types for the value to be matched.
+ * @template TMatchObject - Allowed structure for the match object, with an optional default property.
  *
- * <code>match("hello", { foo: 2, bar: 3, default: 5 }); // 5</code>
+ * @param {TValue} valueToMatch - The value to be matched against the keys in the match object.
+ * @param {TMatchObject} matchObject - An object with keys to match against and their corresponding values. Can also have an optional 'default' property.
  *
- * @param value value to be matched
- * @param switchObject compare the value to the object keys
- * @return the matched value, or default, if provided
+ * @returns {TMatchObject extends { default: Exclude<any, undefined> } ? ValueUnion<TMatchObject> : undefined | ValueUnion<TMatchObject>}
+ * If a match is found or a default value exists, the function returns the corresponding value.
+ * If no match or default value is found, the function returns `undefined`.
+ *
+ * @example
+ * const matchObject = {
+ *   foo: 1,
+ *   bar: 2,
+ *   default: 3
+ * }
+ * match("foo", matchObject) // 1
+ * match("qux", matchObject) // 3
+ * match("qux", { foo: 1, bar: 2 }) // undefined
  */
 export const match = <
-  T extends string | number | symbol | undefined | null,
-  P = any
+  TValue extends string | number | symbol | undefined | null,
+  TMatchObject extends
+    | {
+        [key in Exclude<TValue, undefined | null>]: any
+      }
+    | ({
+        [key in Exclude<TValue, undefined | null>]?: any
+      } & { default: Exclude<any, undefined> })
 >(
-  value: T,
-  switchObject: { default?: P } & {
-    [key in Exclude<T, undefined | null>]?: P
+  valueToMatch: TValue,
+  matchObject: TMatchObject
+): TMatchObject extends { default: Exclude<any, undefined> }
+  ? ValueUnion<TMatchObject>
+  : undefined | ValueUnion<TMatchObject> => {
+  if (valueToMatch && matchObject.hasOwnProperty(valueToMatch)) {
+    return matchObject[valueToMatch as Exclude<TValue, undefined | null>]
   }
-) => {
-  if (value && switchObject.hasOwnProperty(value)) {
-    return switchObject[value as Exclude<T, undefined | null>]
-  }
-  return switchObject["default"]
+  // @ts-ignore
+  return matchObject["default"]
 }
 
 const isTypeof =

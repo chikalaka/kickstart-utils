@@ -46,21 +46,36 @@ describe("match", () => {
       if (rand < 0.7) return "b"
       return "c"
     }
-    const t = getAbc()
-    const a = match<Abc>(t, {
-      default: "d",
+    const abc = getAbc()
+    const typeCheck1 = match(abc, {
+      default: 3,
       c: "e",
-      b: 3
-    }) // ideally should be string | number | undefined
+      b: "3"
+    }) // string | number
 
-    // const aa = match(t, { default: "d", c: "e", b: 3 }) // ideally should be string | number | undefined
+    const typeCheck2 = match(abc, {
+      default: () => "d",
+      a: () => 3,
+      c: () => "e",
+      b: () => "t"
+    }) // () => string | () => number
+    typeCheck2()
 
-    const b: number | string | undefined = match<Abc, number | string>(t, {
-      default: "d",
-      c: 3
-    })
-    const c: string | undefined = match(undefined, { default: "d" })
-    // const c2: string = match(undefined, { default: "d" }) // ideally should be string
+    const typeCheck3 = match(abc, {
+      default: 3,
+      c: () => 2,
+      b: "t"
+    }) // number | string | () => number
+
+    const getString = (): string => {
+      return Math.random() + ""
+    }
+
+    const typeCheck4 = match(getString(), {
+      a: "a",
+      b: "b"
+    }) // string | undefined
+    // typeCheck4.trim() // error
 
     const switchObject = {
       foo: 2,
@@ -70,8 +85,8 @@ describe("match", () => {
     expect(match("foo", switchObject)).toBe(2)
     expect(match("default", switchObject)).toBe(5)
     expect(match("not exist", switchObject)).toBe(5)
-    expect(match(2, switchObject)).toBe(5)
-    expect(match(2, {})).toBe(undefined)
+    expect(match(undefined, switchObject)).toBe(5)
+    expect(match(undefined, { a: 1, b: 2 })).toBe(undefined)
   })
 })
 
